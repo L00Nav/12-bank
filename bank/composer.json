@@ -1,0 +1,16 @@
+{
+    "name": "comfyhole/bank",
+    "description": "Omnicorp Bank",
+    "autoload": {
+        "psr-4": {
+            "Bank\\": "src/app"
+        }
+    },
+    "authors": [
+        {
+            "name": "TayakiNoTenshi",
+            "email": "luixlt@yahoo.com"
+        }
+    ],
+    "require": {}
+}
