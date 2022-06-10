@@ -1,11 +1,35 @@
-body {
-  background-color: #111;
-  color: #ddd;
+:root {
+  --main-gold: #d7d5bf;
+  --main-black: #101011;
+  --actual-black: #000;
 }
 
+body,
+body * {
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+body {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  background-color: var(--main-black);
+  color: var(--main-gold);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.testBlock {
+  border: solid 1px var(--main-gold);
+}
+
+/*Messages*/
 .success {
   padding: 5px;
-  background-color: aqua;
+  background-color: rgb(49, 48, 124);
   border: 1px solid black;
   margin: 5px;
 }
@@ -15,4 +39,76 @@ body {
   background-color: crimson;
   border: 1px solid black;
   margin: 5px;
+}
+
+/*Header*/
+.titleBlock {
+  margin: 80px 0 50px;
+}
+
+.title {
+  font-size: 100px;
+}
+
+.titleQuote {
+  font-size: 40px;
+}
+
+/*Account*/
+.accountBar {
+  width: 900px;
+  margin: 0 0 40px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
+/*General*/
+.contentContainer {
+  width: 900px;
+  margin: 0 0 40px;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.contentBox {
+  border: solid 1px var(--main-gold);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 20px;
+}
+
+.button {
+  background-color: var(--main-gold);
+  color: var(--main-black);
+  padding: 5px 8px;
+  border-radius: 10px;
+}
+
+/*Nav*/
+.navLink, .logout {
+  background: none;
+  border: none;
+  color: var(--main-gold);
+  font-size: 20px;
+  text-decoration: none;
+  padding: 5px;
+  display: block;
+  font-weight: 100;
+}
+
+.navLink:hover, .logout:hover {
+  text-decoration: underline;
+}
+
+/*Main*/
+.mainContetBlock {
+  width: 700px;
+}
+
+.mainContent {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

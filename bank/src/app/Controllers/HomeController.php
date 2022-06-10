@@ -12,14 +12,7 @@ class HomeController
 
     public function index()
     {
-        $list = [];
-        for($i = 0; $i < 10; $i++)
-        {
-            $list[] = rand(1000, 9999);
-        }
-        return App::view('home', [
-            'title' => 'Alabama',
-            'list' => $list]);
+        return App::view('login');
     }
     
     public function indexJson()
@@ -44,11 +37,36 @@ class HomeController
         return App::view('test');
     }
 
+    public function accounts()
+    {
+        return App::view('accounts');
+    }
+
+    public function createAccount()
+    {
+        return App::view('createAccount');
+    }
+
+    public function addFunds()
+    {
+        return App::view('addFunds');
+    }
+
+    public function withdrawFunds()
+    {
+        return App::view('withdrawFunds');
+    }
+
     public function doForm()
     {
         M::add('Great', 'success');
         M::add($_POST['alabama'], 'alert');
         //calculations
         return App::redirect('form');
+    }
+
+    public function fourOhFour()
+    {
+        return App::view('404');
     }
 }
