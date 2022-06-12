@@ -29,11 +29,14 @@ class App
 
     public static function view(string $name, array $data = [])
     {
+        $data['loggedIn'] = self::auth();
+        if($data['loggedIn'])
+            $data['fullName'] = self::authName();
         extract($data);
         require __DIR__ .' /../views/'.$name.'.php';
     }
 
-    public static function authAdd(object $user) {
+    public static function authAdd(array $user) {
         $_SESSION['auth'] = 1;
         $_SESSION['user'] = $user;
     }
@@ -47,7 +50,7 @@ class App
     }
 
     public static function authName() : string {
-        return $_SESSION['user']->full_name;
+        return $_SESSION['user']['fname'].' '.$_SESSION['user']['lname'];
     }
 
     public static function json(array $data = [])
@@ -56,7 +59,7 @@ class App
         echo json_encode($data);
     }
 
-    public static function redirect($url = '')
+    public static function redirect(string $url = '')
     {
         header('Location: http://'.self::DOMAIN.'/'.$url, 0);
     }
@@ -95,7 +98,6 @@ class App
             'pnumber' => $_POST['pnumber'],
             'anumber' => $_POST['anumber'],
             'pass' => $_POST['pass'],);
-
             (new AccountController)->createAccount($userInfo);
         }
 
@@ -129,26 +131,6 @@ class App
         if ('GET' == $m && count($uri) == 1 && $uri[0] === 'withdrawFunds')
         {
             return (new HomeController)->withdrawFunds();
-        }
-
-        if ('GET' == $m && count($uri) == 2 && $uri[0] === 'get-it')
-        {
-            return (new HomeController)->getIt($uri[1]);
-        }
-
-        if ('GET' == $m && count($uri) == 1 && $uri[0] === 'form')
-        {
-            return (new HomeController)->form();
-        }
-
-        if ('GET' == $m && count($uri) == 1 && $uri[0] === 'test')
-        {
-            return (new HomeController)->test();
-        }
-
-        if ('POST' == $m && count($uri) == 1 && $uri[0] === 'form')
-        {
-            return (new HomeController)->doForm();
         }
 
         else

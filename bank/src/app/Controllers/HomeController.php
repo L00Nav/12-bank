@@ -7,11 +7,6 @@ use Bank\Controllers\AccountController as AC;
 
 class HomeController
 {
-    public function getit($param)
-    {
-        echo 'AAA: '.$param;
-    }
-
     public function index()
     {
         return App::view('login');

@@ -14,16 +14,16 @@ class AccountController
 
     public function doLogin()
     {
-        $users = json_decode(file_get_contents(__DIR__. '/../data/accounts.json'));
+        $users = (new AccountsDB('accounts'))->showAll();
         foreach($users as $user)
         {
-            if ($_POST['email'] != $user->email)
+            if ($_POST['email'] != $user['email'])
             {
                 continue;
             }
-            if (md5($_POST['pass']) != $user->pass)
+            if (md5($_POST['pass']) != $user['pass'])
             {
-                M::add("I can't believe you've done this 1", 'alert');
+                M::add("Invalid log-in credentials", 'alert');
                 return App::redirect('login');
             }
             else {
@@ -32,7 +32,7 @@ class AccountController
                 return App::redirect('accounts');
             }
         }
-        M::add("I can't believe you've done this 2", 'alert');
+        M::add("Invalid log-in credentials", 'alert');
         return App::redirect('login');
     }
 
@@ -77,4 +77,8 @@ class AccountController
         } while (!(new Validator)->validAccountNumber(array('anumber' => $iban, 'id' => (new AccountsDB('accounts'))->getNextID())));
         return $iban;
     }
+
+    //add funds
+
+    //withdraw funds
 }

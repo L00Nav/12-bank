@@ -13,7 +13,18 @@ require __DIR__ . '/messages.php'
 <?php require __DIR__ . '/navBar.php'; ?>
 
 <main  class="mainContetBlock contentBox">
-    Currently, there are no accounts...
+    <?php if (!isset($_SESSION['user'])) : ?>
+        Log in to see your account.
+    <?php endif ?>
+    <?php if (isset($_SESSION['user'])) : ?>
+        <div class="account contentBox">
+            <?php echo ($_SESSION['user']['lname'].' '.$_SESSION['user']['fname'].'<br><hr>') ?>
+            <?php echo ($_SESSION['user']['email'].'<br>') ?>
+            <?php echo ($_SESSION['user']['pnumber'].'<br>') ?>
+            <?php echo ($_SESSION['user']['anumber'].'<br>') ?>
+            <?php echo ($_SESSION['user']['funds'].' €<br>') ?>
+        </div>
+    <?php endif ?>
 </main>
 
 </div>

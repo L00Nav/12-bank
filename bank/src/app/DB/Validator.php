@@ -5,9 +5,11 @@ use Bank\Messages as M;
  
 class Validator
 {
+    private $nextID;
+
     public function __construct()
     {
-        
+        $nextID = (new AccountsDB('accounts'))->getNextID();
     }
 
     public function validAccount(array $account)
@@ -73,14 +75,14 @@ class Validator
         $data = (new AccountsDB('accounts'))->showAll();
         foreach($data as $account)
         {
-            if ($account['id'] != $acc['id'] && $account['email'] == $acc['email'])
+            if ($account['id'] != ($acc['id'] ?? $this->nextID) && $account['email'] == $acc['email'])
             {
                 M::add('An account with this email already exists', 'alert');
                 return false;
             }
         }
             
-        return false;
+        return true;
     }
 
     public function validPersonalID(array $acc, $alerts = true)
@@ -102,7 +104,7 @@ class Validator
         $data = (new AccountsDB('accounts'))->showAll();
         foreach($data as $account)
         {
-            if ($account['id'] != $acc['id'] && $account['pnumber'] == $acc['pnumber'])
+            if ($account['id'] != ($acc['id'] ?? $this->nextID) && $account['pnumber'] == $acc['pnumber'])
             {
                 if ($alerts)
                     M::add('An account with this personal ID number already exists', 'alert');
@@ -127,7 +129,7 @@ class Validator
         
         foreach((new AccountsDB('accounts'))->showAll() as $account)
         {
-            if ($account['id'] != $acc['id'] && $account['anumber'] == $acc['anumber'])
+            if ($account['id'] != ($acc['id'] ?? $this->nextID) && $account['anumber'] == $acc['anumber'])
             {
                 if ($alerts)
                     M::add('An account with this IBAN already exists', 'alert');
