@@ -26,7 +26,6 @@ require __DIR__ . '/messages.php'
         <input type="text" name="anumber" value="<?= $iban ?>" readonly><br><br>
         <label for="pass">Password:</label><br>
         <input type="password" name="pass"><br><br>
-        <input type="hidden" name="requestType" value="createAccount">
         <input class="button" type="submit" value="Submit">
     </form>
 </main>

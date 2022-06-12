@@ -29,6 +29,11 @@ class HomeController
         return App::view('accounts');
     }
 
+    public function allAccounts()
+    {
+        return App::view('allAccounts', ['allAccounts' => (new AccountsDB('accounts'))->showAll()]);
+    }
+
     public function createAccount()
     {
         return App::view('createAccount', ['messages' => M::get(), 'iban' => (new AC)->getIBAN()]);
