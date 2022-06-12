@@ -101,6 +101,16 @@ class App
             (new AccountController)->createAccount($userInfo);
         }
 
+        if ('POST' == $m && count($uri) == 1 && $uri[0] === 'deposit')
+        {
+            (new AccountController)->deposit((int)$_SESSION['user']['id'], (float)$_POST['amount']);
+        }
+
+        if ('POST' == $m && count($uri) == 1 && $uri[0] === 'withdraw')
+        {
+            (new AccountController)->withdraw((int)$_SESSION['user']['id'], (float)$_POST['amount']);
+        }
+
 
 
         if (count($uri) == 1 && $uri[0] === '')

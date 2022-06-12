@@ -36,12 +36,12 @@ class HomeController
 
     public function addFunds()
     {
-        return App::view('addFunds');
+        return App::view('addFunds', ['messages' => M::get()]);
     }
 
     public function withdrawFunds()
     {
-        return App::view('withdrawFunds');
+        return App::view('withdrawFunds', ['messages' => M::get()]);
     }
 
     public function doForm()

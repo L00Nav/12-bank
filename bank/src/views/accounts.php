@@ -17,7 +17,7 @@ require __DIR__ . '/messages.php'
         Log in to see your account.
     <?php endif ?>
     <?php if (isset($_SESSION['user'])) : ?>
-        <div class="account contentBox">
+        <div class="left contentBox">
             <?php echo ($_SESSION['user']['lname'].' '.$_SESSION['user']['fname'].'<br><hr>') ?>
             <?php echo ($_SESSION['user']['email'].'<br>') ?>
             <?php echo ($_SESSION['user']['pnumber'].'<br>') ?>

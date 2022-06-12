@@ -78,7 +78,54 @@ class AccountController
         return $iban;
     }
 
-    //add funds
+    public function deposit(int $id, $amount)
+    {
+        if ((new Validator)->validDeposit($amount))
+        {
+            $db = new AccountsDB('accounts');
+            $user = $db->show($id);
+            if (sizeof($user) == 0)
+            {
+                M::add('Account not found', 'alert');
+                return App::redirect('addFunds');
+            }
+            $user['funds'] += $amount;
+            $db->update($id, $user);
+            unset($db);
+            M::add('Funds deposited', 'success');
+            self::updateDisplay($_SESSION['user']['id']);
+        }
+        return App::redirect('addFunds');
+    }
 
-    //withdraw funds
+    public function withdraw(int $id, $amount)
+    {
+        $db = new AccountsDB('accounts');
+        $user = $db->show($id);
+        if (sizeof($user) == 0)
+        {
+            M::add('Account not found', 'alert');
+            return App::redirect('withdrawFunds');
+        }
+        if ((new Validator)->validWithdrawal($user, $amount))
+        {
+            $user['funds'] -= $amount;
+            $db->update($id, $user);
+            unset($db);
+            M::add('Funds withdrawn', 'success');
+            self::updateDisplay($_SESSION['user']['id']);
+        }
+        return App::redirect('withdrawFunds');
+    }
+
+    public function updateDisplay(int $id)
+    {
+        $userData = (new AccountsDB('accounts'))->show($id);
+        $_SESSION['user']['fname'] = $userData['fname'];
+        $_SESSION['user']['lname'] = $userData['lname'];
+        $_SESSION['user']['email'] = $userData['email'];
+        $_SESSION['user']['pnumber'] = $userData['pnumber'];
+        $_SESSION['user']['anumber'] = $userData['anumber'];
+        $_SESSION['user']['funds'] = $userData['funds'];
+    }
 }

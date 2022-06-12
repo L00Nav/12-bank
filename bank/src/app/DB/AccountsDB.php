@@ -47,8 +47,8 @@ class AccountsDB implements DataBase
         {
             if($user['id'] == $userId)
             {
-                $this->$data[$key] = $userData;
-                break;
+                $this->data[$key] = $userData;
+                return;
             }
         }
     }
@@ -59,7 +59,7 @@ class AccountsDB implements DataBase
         {
             if($user['id'] == $userId)
             {
-                unset($this->$data[$key]);
+                unset($this->data[$key]);
                 break;
             }
         }
@@ -74,7 +74,7 @@ class AccountsDB implements DataBase
                 return $user;
             }
         }
-        //what if it doesn't find anything?
+        return [];
     }
     
     public function showAll() : array

@@ -12,8 +12,18 @@ require __DIR__ . '/messages.php'
 
 <?php require __DIR__ . '/navBar.php'; ?>
 
-<main  class="mainContetBlock contentBox">
-    Currently, there are no funds to withdraw...
+<main  class="mainContetBlock contentBox left">
+    <?php if (!isset($_SESSION['user'])) : ?>
+        Log in to manage your funds.
+    <?php endif ?>
+    <?php if (isset($_SESSION['user'])) : ?>
+            <?php echo ($_SESSION['user']['lname'].' '.$_SESSION['user']['fname'].'<br>') ?>
+            <?php echo ($_SESSION['user']['funds'].' €<br>') ?>
+            <form class="left" action="withdraw" method="post"><hr><br>
+                Withdraw amount: <input type="number" name="amount" step="0.01"><br>
+                <input type="submit" value="Withdraw" class="button">
+            </form>
+    <?php endif ?>
 </main>
 
 </div>

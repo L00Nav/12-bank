@@ -139,15 +139,56 @@ class Validator
 
         return true;
     }
-}//the default function of this is for data creation/editing operations, so don't worry about logins
 
-    /*data:
-        Account ID - handled by userDB
-        fname
-        lname
-        email
-        pnumber
-        anumber
-        pass
-        funds - not relevant for creation, but will probably need functions later
-    */
+    public function validDeposit($amount)
+    {
+        if (!is_float($amount) && !is_int($amount))
+        {
+            M::add('The amount must be a number', 'alert');
+            return false;
+        }
+
+        if ($amount < 0.01)
+        {
+            M::add('The amount must be a positive number', 'alert');
+            return false;
+        }
+        
+        if($amount != floor($amount * 100) / 100)
+        {
+            M::add('Invalid number', 'alert');
+            return false;
+        }
+
+        return true;
+    }
+
+    public function validWithdrawal(array $user, $amount)
+    {
+        if (!is_float($amount) && !is_int($amount))
+        {
+            M::add('The amount must be a number', 'alert');
+            return false;
+        }
+
+        if ($amount < 0.01)
+        {
+            M::add('The amount must be a positive number', 'alert');
+            return false;
+        }
+        
+        if($amount != floor($amount * 100) / 100)
+        {
+            M::add('Invalid number', 'alert');
+            return false;
+        }
+
+        if($amount > $user['funds'])
+        {
+            M::add('Insufficient funds', 'alert');
+            return false;
+        }
+
+        return true;
+    }
+}
