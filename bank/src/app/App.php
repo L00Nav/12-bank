@@ -1,7 +1,6 @@
 <?php
 namespace Bank;
 use Bank\Controllers\HomeController;
-use Bank\Controllers\LoginController;
 use Bank\Controllers\AccountController;
 use Bank\Messages;
 
@@ -59,7 +58,7 @@ class App
 
     public static function redirect($url = '')
     {
-        header('Location: http://'.self::DOMAIN.'/'.$url);
+        header('Location: http://'.self::DOMAIN.'/'.$url, 0);
     }
 
     private static function route(array $uri)
@@ -74,17 +73,17 @@ class App
             {
                 return self::redirect('accounts');
             }
-            return (new LoginController)->showLogin();
+            return (new AccountController)->showLogin();
         }
 
         if ('POST' == $m && count($uri) == 1 && $uri[0] === 'login')
         {
-            return (new LoginController)->doLogin();
+            return (new AccountController)->doLogin();
         }
 
         if ('POST' == $m && count($uri) == 1 && $uri[0] === 'logout')
         {
-            return (new LoginController)->doLogout();
+            return (new AccountController)->doLogout();
         }
 
 
@@ -97,7 +96,7 @@ class App
             'anumber' => $_POST['anumber'],
             'pass' => $_POST['pass'],);
 
-            return (new AccountController)->createAccount($userInfo);
+            (new AccountController)->createAccount($userInfo);
         }
 
 

@@ -2,6 +2,8 @@
 namespace Bank\Controllers;
 use Bank\App;
 use Bank\Messages as M;
+use Bank\DB\AccountsDB;
+use Bank\Controllers\AccountController as AC;
 
 class HomeController
 {
@@ -27,16 +29,6 @@ class HomeController
             'list' => $list]);
     }
 
-    public function form()
-    {
-        return App::view('form', ['messages' => M::get()]);
-    }
-
-    public function test()
-    {
-        return App::view('test');
-    }
-
     public function accounts()
     {
         return App::view('accounts');
@@ -44,7 +36,7 @@ class HomeController
 
     public function createAccount()
     {
-        return App::view('createAccount');
+        return App::view('createAccount', ['messages' => M::get(), 'iban' => (new AC)->getIBAN()]);
     }
 
     public function addFunds()

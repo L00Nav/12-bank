@@ -1,7 +1,15 @@
 <?php if(!empty($messages)) : ?>
-<div>
+<div class="messageBox">
     <?php foreach($messages as $message) : ?>
-        <div class="<?= $message['type'] ?>"><?= $message['msg'] ?></div>
+        <div class="contentBox">
+            <div class="<?= $message['type'] ?>">
+                <span class="messageSymbol">
+                    <?= $message['type'] == 'success' ? '✓ ' : ''?>
+                    <?= $message['type'] == 'alert' ? '✕ ' : ''?>
+                </span>
+                <?= $message['msg'] ?>
+            </div>
+        </div>
     <?php endforeach ?>
 </div>
 <?php endif ?>

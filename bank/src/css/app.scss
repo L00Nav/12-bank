@@ -29,18 +29,25 @@ body {
 
 /*Messages*/
 
-.success {
-    padding: 5px;
-    background-color: rgb(49, 48, 124);
-    border: 1px solid black;
-    margin: 5px;
+.success > .messageSymbol {
+    color: rgb(48, 124, 48);
 }
 
-.alert {
-    padding: 5px;
-    background-color: crimson;
-    border: 1px solid black;
-    margin: 5px;
+.alert > .messageSymbol {
+    color: rgb(124, 48, 48);
+}
+
+.messageBox {
+    display: flex;
+    flex-direction: column;
+    width: 900px;
+    position: relative;
+    bottom: 15px;
+}
+
+.messageBox > .contentBox {
+    flex-grow: 0;
+    align-self: flex-start;
 }
 
 

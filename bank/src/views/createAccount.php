@@ -10,7 +10,7 @@ require __DIR__ . '/messages.php'
 
 <div class="contentContainer">
 
-<?php require __DIR__ . '/navBar.php'; ?>
+<?php require __DIR__ . '/navBar.php';?>
 
 <main  class="mainContetBlock contentBox">
     <form class="mainContent" action="createAccount" method="post">
@@ -23,7 +23,7 @@ require __DIR__ . '/messages.php'
         <label for="pnumber">Personal ID number:</label><br>
         <input type="text" name="pnumber"><br><br>
         <label for="anumber">Account number:</label><br>
-        <input type="text" name="anumber"><br><br>
+        <input type="text" name="anumber" value="<?= $iban ?>" readonly><br><br>
         <label for="pass">Password:</label><br>
         <input type="password" name="pass"><br><br>
         <input type="hidden" name="requestType" value="createAccount">
