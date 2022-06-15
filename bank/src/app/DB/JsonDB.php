@@ -1,7 +1,7 @@
 <?php
 namespace Bank\DB;
  
-class AccountsDB implements DataBase
+class JsonDB implements DataBase
 { 
     private $data, $id, $file;
 
@@ -17,9 +17,9 @@ class AccountsDB implements DataBase
         $this->id = json_decode(file_get_contents(__DIR__. '/'.$file.'_id.json'), 1);
     }
 
-    public function __destruct()
+    public function save()
     {
-        file_put_contents(__DIR__. '/'.$this->file.'.json', json_encode($this->data));
+        file_put_contents(__DIR__. '/'.$this->file.'.json', json_encode($this->data)); 
     }
 
     public function create(array $userData) : void

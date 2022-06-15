@@ -92,23 +92,17 @@ class App
 
         if ('POST' == $m && count($uri) == 1 && $uri[0] === 'createAccount')
         {
-            $userInfo = array('fname' => $_POST['fname'],
-            'lname' => $_POST['lname'],
-            'email' => $_POST['email'],
-            'pnumber' => $_POST['pnumber'],
-            'anumber' => $_POST['anumber'],
-            'pass' => $_POST['pass'],);
-            (new AccountController)->createAccount($userInfo);
+            (new AccountController)->createAccount();
         }
 
         if ('POST' == $m && count($uri) == 1 && $uri[0] === 'deposit')
         {
-            (new AccountController)->deposit((int)$_SESSION['user']['id'], (float)$_POST['amount']);
+            (new AccountController)->deposit();
         }
 
         if ('POST' == $m && count($uri) == 1 && $uri[0] === 'withdraw')
         {
-            (new AccountController)->withdraw((int)$_SESSION['user']['id'], (float)$_POST['amount']);
+            (new AccountController)->withdraw();
         }
 
 

@@ -1,6 +1,6 @@
 <?php
 namespace Bank\DB;
-use Bank\DB\AccountsDB;
+use Bank\DB\JsonDB;
 use Bank\Messages as M;
  
 class Validator
@@ -9,7 +9,7 @@ class Validator
 
     public function __construct()
     {
-        $nextID = (new AccountsDB('accounts'))->getNextID();
+        $nextID = (new JsonDB('accounts'))->getNextID();
     }
 
     public function validAccount(array $account)
@@ -72,7 +72,7 @@ class Validator
             return false;
         }
         
-        $data = (new AccountsDB('accounts'))->showAll();
+        $data = (new JsonDB('accounts'))->showAll();
         foreach($data as $account)
         {
             if ($account['id'] != ($acc['id'] ?? $this->nextID) && $account['email'] == $acc['email'])
@@ -101,7 +101,7 @@ class Validator
             return false;
         }
         
-        $data = (new AccountsDB('accounts'))->showAll();
+        $data = (new JsonDB('accounts'))->showAll();
         foreach($data as $account)
         {
             if ($account['id'] != ($acc['id'] ?? $this->nextID) && $account['pnumber'] == $acc['pnumber'])
@@ -127,7 +127,7 @@ class Validator
             return false;
         }
         
-        foreach((new AccountsDB('accounts'))->showAll() as $account)
+        foreach((new JsonDB('accounts'))->showAll() as $account)
         {
             if ($account['id'] != ($acc['id'] ?? $this->nextID) && $account['anumber'] == $acc['anumber'])
             {

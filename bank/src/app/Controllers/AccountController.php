@@ -1,7 +1,7 @@
 <?php
 namespace Bank\Controllers;
 use Bank\DB\Validator;
-use Bank\DB\AccountsDB;
+use Bank\DB\JsonDB;
 use Bank\App;
 use Bank\Messages as M;
 
@@ -14,7 +14,7 @@ class AccountController
 
     public function doLogin()
     {
-        $users = (new AccountsDB('accounts'))->showAll();
+        $users = (new JsonDB('accounts'))->showAll();
         foreach($users as $user)
         {
             if ($_POST['email'] != $user['email'])
@@ -43,13 +43,23 @@ class AccountController
         return App::redirect('login');
     }
 
-    public function createAccount(array $submittedInfo)
+    public function createAccount()
     {
+        $submittedInfo = [
+        'fname' => $_POST['fname'],
+        'lname' => $_POST['lname'],
+        'email' => $_POST['email'],
+        'pnumber' => $_POST['pnumber'],
+        'anumber' => $_POST['anumber'],
+        'pass' => $_POST['pass'],];
+
         if((new Validator)->validAccount($submittedInfo))
         {
             $submittedInfo['pass'] = md5($submittedInfo['pass']);
             $submittedInfo['funds'] = 0;
-            (new AccountsDB('accounts'))->create($submittedInfo);
+            $db = new JsonDB('accounts');
+            $db->create($submittedInfo);
+            $db->save();
 
             M::add('Account created', 'success');
             return App::redirect('login');
@@ -74,35 +84,39 @@ class AccountController
             $max--;
             if(!$max)
                 return $iban;
-        } while (!(new Validator)->validAccountNumber(array('anumber' => $iban, 'id' => (new AccountsDB('accounts'))->getNextID())));
+        } while (!(new Validator)->validAccountNumber(['anumber' => $iban, 'id' => (new JsonDB('accounts'))->getNextID()]));
         return $iban;
     }
 
-    public function deposit(int $id, $amount)
+    public function deposit()
     {
+        $id = (int)$_SESSION['user']['id'];
+        $amount = (float)$_POST['amount'];
         if ((new Validator)->validDeposit($amount))
         {
-            $db = new AccountsDB('accounts');
+            $db = new JsonDB('accounts');
             $user = $db->show($id);
-            if (sizeof($user) == 0)
+            if (count($user) == 0)
             {
                 M::add('Account not found', 'alert');
                 return App::redirect('addFunds');
             }
             $user['funds'] += $amount;
             $db->update($id, $user);
-            unset($db);
+            $db->save();
             M::add('Funds deposited', 'success');
             self::updateDisplay($_SESSION['user']['id']);
         }
         return App::redirect('addFunds');
     }
 
-    public function withdraw(int $id, $amount)
+    public function withdraw()
     {
-        $db = new AccountsDB('accounts');
+        $id = (int)$_SESSION['user']['id'];
+        $amount = (float)$_POST['amount'];
+        $db = new JsonDB('accounts');
         $user = $db->show($id);
-        if (sizeof($user) == 0)
+        if (count($user) == 0)
         {
             M::add('Account not found', 'alert');
             return App::redirect('withdrawFunds');
@@ -111,7 +125,7 @@ class AccountController
         {
             $user['funds'] -= $amount;
             $db->update($id, $user);
-            unset($db);
+            $db->save();
             M::add('Funds withdrawn', 'success');
             self::updateDisplay($_SESSION['user']['id']);
         }
@@ -120,12 +134,12 @@ class AccountController
 
     public function updateDisplay(int $id)
     {
-        $userData = (new AccountsDB('accounts'))->show($id);
+        $userData = (new JsonDB('accounts'))->show($id);
         $_SESSION['user']['fname'] = $userData['fname'];
         $_SESSION['user']['lname'] = $userData['lname'];
         $_SESSION['user']['email'] = $userData['email'];
         $_SESSION['user']['pnumber'] = $userData['pnumber'];
         $_SESSION['user']['anumber'] = $userData['anumber'];
         $_SESSION['user']['funds'] = $userData['funds'];
-    }
+    } //better use something other than session
 }

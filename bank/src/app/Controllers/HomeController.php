@@ -2,7 +2,7 @@
 namespace Bank\Controllers;
 use Bank\App;
 use Bank\Messages as M;
-use Bank\DB\AccountsDB;
+use Bank\DB\JsonDB;
 use Bank\Controllers\AccountController as AC;
 
 class HomeController
@@ -31,7 +31,7 @@ class HomeController
 
     public function allAccounts()
     {
-        return App::view('allAccounts', ['allAccounts' => (new AccountsDB('accounts'))->showAll()]);
+        return App::view('allAccounts', ['allAccounts' => (new JsonDB('accounts'))->showAll()]);
     }
 
     public function createAccount()
@@ -53,7 +53,6 @@ class HomeController
     {
         M::add('Great', 'success');
         M::add($_POST['alabama'], 'alert');
-        //calculations
         return App::redirect('form');
     }
 
