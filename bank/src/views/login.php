@@ -19,7 +19,7 @@ require __DIR__ . '/messages.php'
         <label for="pass">Password:</label><br>
         <input type="password" name="pass"><br><br>
         <input type="hidden" name="requestType" value="createAccount">
-        <input class="button" type="submit" value="Submit">
+        <input class="button" type="submit" value="Login">
     </form>
 </main>
 

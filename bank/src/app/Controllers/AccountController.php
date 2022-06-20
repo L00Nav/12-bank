@@ -7,67 +7,27 @@ use Bank\Messages as M;
 
 class AccountController
 {
-    public function showLogin()
+    //Get stuff
+    private static JsonDB $userData, $adminData;
+
+    public static function getUserDatabase()
     {
-        return App::view('login', ['messages' => M::get()]);
+        return self::$userData ?? self::$userData = new JsonDB('accounts');
     }
 
-    public function doLogin()
+    public static function getAdminDatabase()
     {
-        $users = (new JsonDB('accounts'))->showAll();
-        foreach($users as $user)
-        {
-            if ($_POST['email'] != $user['email'])
-            {
-                continue;
-            }
-            if (md5($_POST['pass']) != $user['pass'])
-            {
-                M::add("Invalid log-in credentials", 'alert');
-                return App::redirect('login');
-            }
-            else {
-                App::authAdd($user);
-                M::add('Hello, '.$user->fname, 'success');
-                return App::redirect('accounts');
-            }
-        }
-        M::add("Invalid log-in credentials", 'alert');
-        return App::redirect('login');
+        return self::$adminData ?? self::$adminData = new JsonDB('admins');
     }
 
-    public function doLogout()
+    public static function getUserData()
     {
-        App::authRem();
-        M::add('Logged out', 'success');
-        return App::redirect('login');
+        return isset($_SESSION['userID']) ? self::getUserDatabase()->show($_SESSION['userID']) : [];
     }
 
-    public function createAccount()
+    public static function getAdmin()
     {
-        $submittedInfo = [
-        'fname' => $_POST['fname'],
-        'lname' => $_POST['lname'],
-        'email' => $_POST['email'],
-        'pnumber' => $_POST['pnumber'],
-        'anumber' => $_POST['anumber'],
-        'pass' => $_POST['pass'],];
-
-        if((new Validator)->validAccount($submittedInfo))
-        {
-            $submittedInfo['pass'] = md5($submittedInfo['pass']);
-            $submittedInfo['funds'] = 0;
-            $db = new JsonDB('accounts');
-            $db->create($submittedInfo);
-            $db->save();
-
-            M::add('Account created', 'success');
-            return App::redirect('login');
-        }
-        else
-        {
-            return App::redirect('accountCreationForm');
-        }
+        return isset($_SESSION['adminID']) ? self::getAdminDatabase()->show($_SESSION['adminID']) : [];
     }
 
     public function getIBAN()
@@ -84,38 +44,196 @@ class AccountController
             $max--;
             if(!$max)
                 return $iban;
-        } while (!(new Validator)->validAccountNumber(['anumber' => $iban, 'id' => (new JsonDB('accounts'))->getNextID()]));
+        } while (!(new Validator)->validAccountNumber(['anumber' => $iban, 'id' => self::getUserDatabase()->getNextID()]));
         return $iban;
+    }
+
+    //User login
+    public function showLogin()
+    {
+        if (self::auth())
+        {
+            return App::redirect('accounts');
+        }
+        return App::view('login', ['messages' => M::get()]);
+    }
+
+    public function doLogin()
+    {
+        $users = self::getUserDatabase()->showAll();
+        foreach($users as $user)
+        {
+            if ($_POST['email'] != $user['email'])
+            {
+                continue;
+            }
+            if (md5($_POST['pass']) != $user['pass'])
+            {
+                M::add("Invalid log-in credentials", 'alert');
+                return App::redirect('login');
+            }
+            else {
+                self::authAdd($user['id']);
+                M::add('Hello, '.$user->fname, 'success');
+                return App::redirect('accounts');
+            }
+        }
+        M::add("Invalid log-in credentials", 'alert');
+        return App::redirect('login');
+    }
+
+    public function doLogout()
+    {
+        self::authRem();
+        M::add('Logged out', 'success');
+        return App::redirect('login');
+    }
+
+    public static function authAdd(int $id) {
+        $_SESSION['auth'] = 1;
+        $_SESSION['userID'] = $id;
+    }
+
+    public static function authRem() {
+        unset($_SESSION['auth'], $_SESSION['userID']);
+    }
+
+    public static function auth() : bool {
+        return isset($_SESSION['auth']) && $_SESSION['auth'] == 1;
+    }
+
+    public static function authName() : string {
+        return self::getUserData()['fname'].' '.self::getUserData()['lname'];
+    }
+
+    //Admin login
+    public function showAdminLogin()
+    {
+        if (self::adminAuth())
+        {
+            return App::redirect('accounts');
+        }
+        return App::view('adminLogin', ['messages' => M::get()]);
+    }
+
+    public function doAdminLogin()
+    {
+        $admins = self::getAdminDatabase()->showAll();
+        foreach($admins as $admin)
+        {
+            if ($_POST['adminName'] != $admin['adminName'])
+            {
+                continue;
+            }
+            if (md5($_POST['adminPass']) != $admin['adminPass'])
+            {
+                M::add("Invalid log-in credentials 1", 'alert');
+                return App::redirect('adminLogin');
+            }
+            else 
+            {
+                self::adminAuthAdd($admin['id']);
+                M::add('Hello, '.$admin->adminName, 'success');
+                return App::redirect('accounts');
+            }
+        }
+        M::add("Invalid log-in credentials", 'alert');
+        return App::redirect('adminLogin');
+    }
+
+    public function doAdminLogout()
+    {
+        self::adminAuthRem();
+        M::add('Logged out', 'success');
+        return App::redirect('login');
+    }
+
+    public static function adminAuthAdd(int $id) {
+        $_SESSION['adminAuth'] = 1;
+        $_SESSION['adminID'] = $id;
+    }
+
+    public static function adminAuthRem() {
+        unset($_SESSION['adminAuth'], $_SESSION['adminID']);
+    }
+
+    public static function adminAuth() : bool {
+        return isset($_SESSION['adminAuth']) && $_SESSION['adminAuth'] == 1;
+    }
+
+    //Account management
+    public function createAccount()
+    {
+        $submittedInfo = [
+        'fname' => $_POST['fname'],
+        'lname' => $_POST['lname'],
+        'email' => $_POST['email'],
+        'pnumber' => $_POST['pnumber'],
+        'anumber' => $_POST['anumber'],
+        'pass' => $_POST['pass']];
+
+        if((new Validator)->validAccount($submittedInfo))
+        {
+            $submittedInfo['pass'] = md5($submittedInfo['pass']);
+            $submittedInfo['funds'] = 0;
+            self::getUserDatabase()->create($submittedInfo);
+            self::getUserDatabase()->save();
+
+            M::add('Account created', 'success');
+            return App::redirect('login');
+        }
+        else
+        {
+            return App::redirect('accountCreationForm');
+        }
+    }
+
+    public function createAdminAccount()
+    {
+        $submittedInfo = [
+        'adminName' => $_POST['adminName'],
+        'adminPass' => $_POST['adminPass']];
+
+        if ((new Validator)->validAdmin($submittedInfo))
+        {
+            $submittedInfo['adminPass'] = md5($submittedInfo['adminPass']);
+            self::getAdminDatabase()->create($submittedInfo);
+            self::getAdminDatabase()->save();
+            M::add('Account created', 'success');
+            return App::redirect('adminLogin');
+        }
+        else
+        {
+            return App::redirect('adminCreationForm');
+        }
+
     }
 
     public function deposit()
     {
-        $id = (int)$_SESSION['user']['id'];
+        $id = (int)$_SESSION['userID'];
         $amount = (float)$_POST['amount'];
         if ((new Validator)->validDeposit($amount))
         {
-            $db = new JsonDB('accounts');
-            $user = $db->show($id);
+            $user = self::getUserData();
             if (count($user) == 0)
             {
                 M::add('Account not found', 'alert');
                 return App::redirect('addFunds');
             }
             $user['funds'] += $amount;
-            $db->update($id, $user);
-            $db->save();
+            self::getUserDatabase()->update($id, $user);
+            self::getUserDatabase()->save();
             M::add('Funds deposited', 'success');
-            self::updateDisplay($_SESSION['user']['id']);
         }
         return App::redirect('addFunds');
     }
 
     public function withdraw()
     {
-        $id = (int)$_SESSION['user']['id'];
+        $id = (int)$_SESSION['userID'];
         $amount = (float)$_POST['amount'];
-        $db = new JsonDB('accounts');
-        $user = $db->show($id);
+        $user = self::getUserData();
         if (count($user) == 0)
         {
             M::add('Account not found', 'alert');
@@ -124,17 +242,17 @@ class AccountController
         if ((new Validator)->validWithdrawal($user, $amount))
         {
             $user['funds'] -= $amount;
-            $db->update($id, $user);
-            $db->save();
+            self::getUserDatabase()->update($id, $user);
+            self::getUserDatabase()->save();
             M::add('Funds withdrawn', 'success');
-            self::updateDisplay($_SESSION['user']['id']);
         }
         return App::redirect('withdrawFunds');
     }
-
+    
+    //misc
     public function updateDisplay(int $id)
     {
-        $userData = (new JsonDB('accounts'))->show($id);
+        $userData = self::getUserDatabase()->show($id);
         $_SESSION['user']['fname'] = $userData['fname'];
         $_SESSION['user']['lname'] = $userData['lname'];
         $_SESSION['user']['email'] = $userData['email'];

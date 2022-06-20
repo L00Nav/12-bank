@@ -26,12 +26,16 @@ class HomeController
 
     public function accounts()
     {
-        return App::view('accounts');
+        if(AC::adminAuth())
+            $data = AC::getUserDatabase()->showAll();
+        else
+            $data = [AC::getUserData()];
+        return App::view('accounts', ['messages' => M::get(), 'accounts' => $data]);
     }
 
     public function allAccounts()
     {
-        return App::view('allAccounts', ['allAccounts' => (new JsonDB('accounts'))->showAll()]);
+        return App::view('allAccounts', ['allAccounts' => AC::getUserDatabase()->showAll()]);
     }
 
     public function createAccount()
@@ -39,14 +43,24 @@ class HomeController
         return App::view('createAccount', ['messages' => M::get(), 'iban' => (new AC)->getIBAN()]);
     }
 
+    public function createAdmin()
+    {
+        if (!AC::adminAuth())
+        {
+            M::add('You are not authorised to do that', 'alert');
+            return App::redirect('adminLogin');
+        }
+        return App::view('createAdmin', ['messages' => M::get()]);
+    }
+
     public function addFunds()
     {
-        return App::view('addFunds', ['messages' => M::get()]);
+        return App::view('addFunds', ['messages' => M::get(), 'account' => AC::getUserData()]);
     }
 
     public function withdrawFunds()
     {
-        return App::view('withdrawFunds', ['messages' => M::get()]);
+        return App::view('withdrawFunds', ['messages' => M::get(), 'account' => AC::getUserData()]);
     }
 
     public function doForm()

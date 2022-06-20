@@ -1,8 +1,8 @@
 <?php
 namespace Bank;
 use Bank\Controllers\HomeController;
-use Bank\Controllers\AccountController;
-use Bank\Messages;
+use Bank\Controllers\AccountController as AC;
+use Bank\Messages as M;
 
 class App
 {
@@ -13,7 +13,7 @@ class App
     public static function start()
     {
         session_start();
-        Messages::init();
+        M::init();
         ob_start();
         $uri = explode('/', $_SERVER['REQUEST_URI']);
         array_shift($uri);
@@ -29,28 +29,11 @@ class App
 
     public static function view(string $name, array $data = [])
     {
-        $data['loggedIn'] = self::auth();
+        $data['loggedIn'] = AC::auth();
         if($data['loggedIn'])
-            $data['fullName'] = self::authName();
+            $data['fullName'] = AC::authName();
         extract($data);
         require __DIR__ .' /../views/'.$name.'.php';
-    }
-
-    public static function authAdd(array $user) {
-        $_SESSION['auth'] = 1;
-        $_SESSION['user'] = $user;
-    }
-
-    public static function authRem() {
-        unset($_SESSION['auth'], $_SESSION['user']);
-    }
-
-    public static function auth() : bool {
-        return isset($_SESSION['auth']) && $_SESSION['auth'] == 1;
-    }
-
-    public static function authName() : string {
-        return $_SESSION['user']['fname'].' '.$_SESSION['user']['lname'];
     }
 
     public static function json(array $data = [])
@@ -72,37 +55,60 @@ class App
 
         if ('GET' == $m && count($uri) == 1 && $uri[0] === 'login')
         {
-            if (self::auth())
-            {
-                return self::redirect('accounts');
-            }
-            return (new AccountController)->showLogin();
+            return (new AC)->showLogin();
         }
 
         if ('POST' == $m && count($uri) == 1 && $uri[0] === 'login')
         {
-            return (new AccountController)->doLogin();
+            return (new AC)->doLogin();
         }
 
         if ('POST' == $m && count($uri) == 1 && $uri[0] === 'logout')
         {
-            return (new AccountController)->doLogout();
+            return (new AC)->doLogout();
         }
 
 
         if ('POST' == $m && count($uri) == 1 && $uri[0] === 'createAccount')
         {
-            (new AccountController)->createAccount();
+            (new AC)->createAccount();
         }
 
         if ('POST' == $m && count($uri) == 1 && $uri[0] === 'deposit')
         {
-            (new AccountController)->deposit();
+            (new AC)->deposit();
         }
 
         if ('POST' == $m && count($uri) == 1 && $uri[0] === 'withdraw')
         {
-            (new AccountController)->withdraw();
+            (new AC)->withdraw();
+        }
+
+        //admin login
+
+        if ('GET' == $m && count($uri) == 1 && $uri[0] === 'adminLogin')
+        {
+            return (new AC)->showAdminLogin();
+        }
+
+        if ('POST' == $m && count($uri) == 1 && $uri[0] === 'aLogin')
+        {
+            return (new AC)->doAdminLogin();
+        }
+
+        if ('GET' == $m && count($uri) == 1 && $uri[0] === 'adminLogout')
+        {
+            return (new AC)->doAdminLogout();
+        }
+
+        if ('POST' == $m && count($uri) == 1 && $uri[0] === 'adminCreate')
+        {
+            (new AC)->createAdminAccount();
+        }
+
+        if ('GET' == $m && count($uri) == 1 && $uri[0] === 'adminCreationForm')
+        {
+            return (new HomeController)->createAdmin();
         }
 
 

@@ -26,7 +26,7 @@ require __DIR__ . '/messages.php'
         <input type="text" name="anumber" value="<?= $iban ?>" readonly><br><br>
         <label for="pass">Password:</label><br>
         <input type="password" name="pass"><br><br>
-        <input class="button" type="submit" value="Submit">
+        <input class="button" type="submit" value="Register">
     </form>
 </main>
 
@@ -34,12 +34,3 @@ require __DIR__ . '/messages.php'
 
 <?php
 require __DIR__ . '/bottom.php';
-
-
-/*<ul>
-<?php foreach($list as $value) : ?>
-
-    <li><?= $value ?></li>
-
-<?php endforeach ?>
-</ul>*/

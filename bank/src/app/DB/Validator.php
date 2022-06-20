@@ -1,7 +1,7 @@
 <?php
 namespace Bank\DB;
-use Bank\DB\JsonDB;
 use Bank\Messages as M;
+use Bank\Controllers\AccountController as AC;
  
 class Validator
 {
@@ -9,7 +9,7 @@ class Validator
 
     public function __construct()
     {
-        $nextID = (new JsonDB('accounts'))->getNextID();
+        $nextID = AC::getUserDatabase()->getNextID();
     }
 
     public function validAccount(array $account)
@@ -33,6 +33,25 @@ class Validator
 
         if (!$this->validPass($account))
             $valid = false;
+
+        return $valid;
+    }
+
+    public function validAdmin(array $admin)
+    {
+        $valid = true;
+
+        if (!isset($admin['adminName']) || strlen($admin['adminName']) < 3)
+        {
+            M::add('Invalid username');
+            $valid = false;
+        }
+
+        if (!isset($admin['adminPass']) || strlen($admin['adminPass']) < 3)
+        {
+            M::add('Invalid password');
+            $valid = false;
+        }
 
         return $valid;
     }
@@ -72,7 +91,7 @@ class Validator
             return false;
         }
         
-        $data = (new JsonDB('accounts'))->showAll();
+        $data = AC::getUserDatabase()->showAll();
         foreach($data as $account)
         {
             if ($account['id'] != ($acc['id'] ?? $this->nextID) && $account['email'] == $acc['email'])
@@ -101,7 +120,7 @@ class Validator
             return false;
         }
         
-        $data = (new JsonDB('accounts'))->showAll();
+        $data = AC::getUserDatabase()->showAll();
         foreach($data as $account)
         {
             if ($account['id'] != ($acc['id'] ?? $this->nextID) && $account['pnumber'] == $acc['pnumber'])
@@ -127,7 +146,7 @@ class Validator
             return false;
         }
         
-        foreach((new JsonDB('accounts'))->showAll() as $account)
+        foreach(AC::getUserDatabase()->showAll() as $account)
         {
             if ($account['id'] != ($acc['id'] ?? $this->nextID) && $account['anumber'] == $acc['anumber'])
             {
