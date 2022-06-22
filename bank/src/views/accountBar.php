@@ -12,7 +12,7 @@
     <?php if($loggedIn) : ?>
         <div class="contentBox">
             <form action="logout" method="post">
-                <button class="logout" type submit>Logout</a>
+                <button class="logout" type="submit">Logout</a>
             </form>
         </div>
     <?php endif ?>

@@ -26,16 +26,15 @@ class HomeController
 
     public function accounts()
     {
-        if(AC::adminAuth())
+        $userAuth = AC::auth();
+        $adminAuth = AC::adminAuth();
+
+        if($adminAuth)
             $data = AC::getUserDatabase()->showAll();
         else
             $data = [AC::getUserData()];
-        return App::view('accounts', ['messages' => M::get(), 'accounts' => $data]);
-    }
 
-    public function allAccounts()
-    {
-        return App::view('allAccounts', ['allAccounts' => AC::getUserDatabase()->showAll()]);
+        return App::view('accounts', ['messages' => M::get(), 'accounts' => $data, 'adminAuth' => $adminAuth, 'userAuth' => $userAuth]);
     }
 
     public function createAccount()
@@ -55,12 +54,14 @@ class HomeController
 
     public function addFunds()
     {
-        return App::view('addFunds', ['messages' => M::get(), 'account' => AC::getUserData()]);
+        $userAuth = AC::auth();
+        return App::view('addFunds', ['messages' => M::get(), 'account' => AC::getUserData(), 'userAuth' => $userAuth]);
     }
 
     public function withdrawFunds()
     {
-        return App::view('withdrawFunds', ['messages' => M::get(), 'account' => AC::getUserData()]);
+        $userAuth = AC::auth();
+        return App::view('withdrawFunds', ['messages' => M::get(), 'account' => AC::getUserData(), 'userAuth' => $userAuth]);
     }
 
     public function doForm()

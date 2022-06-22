@@ -128,11 +128,6 @@ class App
             return (new HomeController)->accounts();
         }
 
-        if ('GET' == $m && count($uri) == 1 && $uri[0] === 'allAccounts')
-        {
-            return (new HomeController)->allAccounts();
-        }
-
         if ('GET' == $m && count($uri) == 1 && $uri[0] === 'accountCreationForm')
         {
             return (new HomeController)->createAccount();

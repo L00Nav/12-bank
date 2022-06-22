@@ -72,9 +72,10 @@ class AccountController
                 M::add("Invalid log-in credentials", 'alert');
                 return App::redirect('login');
             }
-            else {
+            else 
+            {
                 self::authAdd($user['id']);
-                M::add('Hello, '.$user->fname, 'success');
+                M::add('Hello, '.$user['fname'], 'success');
                 return App::redirect('accounts');
             }
         }
@@ -89,20 +90,24 @@ class AccountController
         return App::redirect('login');
     }
 
-    public static function authAdd(int $id) {
+    public static function authAdd(int $id)
+    {
         $_SESSION['auth'] = 1;
         $_SESSION['userID'] = $id;
     }
 
-    public static function authRem() {
+    public static function authRem()
+    {
         unset($_SESSION['auth'], $_SESSION['userID']);
     }
 
-    public static function auth() : bool {
+    public static function auth() : bool
+    {
         return isset($_SESSION['auth']) && $_SESSION['auth'] == 1;
     }
 
-    public static function authName() : string {
+    public static function authName() : string
+    {
         return self::getUserData()['fname'].' '.self::getUserData()['lname'];
     }
 
@@ -148,16 +153,19 @@ class AccountController
         return App::redirect('login');
     }
 
-    public static function adminAuthAdd(int $id) {
+    public static function adminAuthAdd(int $id)
+    {
         $_SESSION['adminAuth'] = 1;
         $_SESSION['adminID'] = $id;
     }
 
-    public static function adminAuthRem() {
+    public static function adminAuthRem()
+    {
         unset($_SESSION['adminAuth'], $_SESSION['adminID']);
     }
 
-    public static function adminAuth() : bool {
+    public static function adminAuth() : bool
+    {
         return isset($_SESSION['adminAuth']) && $_SESSION['adminAuth'] == 1;
     }
 

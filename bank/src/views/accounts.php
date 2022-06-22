@@ -13,10 +13,10 @@ require __DIR__ . '/messages.php'
 <?php require __DIR__ . '/navBar.php'; ?>
 
 <main  class="mainContetBlock contentBox">
-    <?php if (!isset($_SESSION['userID']) && !isset($_SESSION['adminID'])) : ?>
+    <?php if (!$userAuth && !$adminAuth) : ?>
         Log in to see your account.
     <?php endif ?>
-    <?php if (isset($_SESSION['userID']) || isset($_SESSION['adminID'])) : ?>
+    <?php if ($userAuth || $adminAuth) : ?>
         <?php foreach($accounts as $account) : ?>
         <div class="contentBox fundsButtonBox left">
             <?php echo ($account['lname'].' '.$account['fname'].'<br><hr>') ?>
@@ -29,6 +29,14 @@ require __DIR__ . '/messages.php'
             </div>
             <div class="contentBox fundsButtonBox left">
                 <a href='withdrawFunds' class='navLink'>Withdraw</a>
+            </div>
+            <div class="contentBox fundsButtonBox left">
+                <form action="delete" method="post">
+                    <?php  ?>
+                    <?php ?>
+                    <button class="logout" type="submit">Logout</a>
+                </form>
+                <a href="addFunds" class="navLink">Delete</a>
             </div>
         </div>
     <?php endforeach ?>

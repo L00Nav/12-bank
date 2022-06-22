@@ -13,10 +13,10 @@ require __DIR__ . '/messages.php'
 <?php require __DIR__ . '/navBar.php'; ?>
 
 <main  class="mainContetBlock contentBox left">
-    <?php if (!isset($_SESSION['userID'])) : ?>
+    <?php if (!$userAuth) : ?>
         Log in to manage your funds.
     <?php endif ?>
-    <?php if (isset($_SESSION['userID'])) : ?>
+    <?php if ($userAuth) : ?>
             <?php echo ($account['lname'].' '.$account['fname'].'<br>') ?>
             <?php echo ($account['funds'].' €<br>') ?>
             <form class="left" action="deposit" method="post"><hr><br>
