@@ -13,6 +13,10 @@ class App
     public static function start()
     {
         session_start();
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: OPTIONS, GET, POST, DELETE, PUT');
+        header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With");
+        header('Content-Type: application/json');
         M::init();
         ob_start();
         $uri = explode('/', $_SERVER['REQUEST_URI']);
@@ -141,6 +145,11 @@ class App
         if ('GET' == $m && count($uri) == 1 && $uri[0] === 'withdrawFunds')
         {
             return (new HomeController)->withdrawFunds();
+        }
+
+        if ('GET' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'test')
+        {
+            return self::json(['Test']);
         }
 
         else

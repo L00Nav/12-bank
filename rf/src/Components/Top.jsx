@@ -7,7 +7,7 @@ function Top()
                 <h4 className="titleQuote">All your life savings are with us</h4>
             </header>
         </>
-    )
+    );
 }
 
 export default Top;

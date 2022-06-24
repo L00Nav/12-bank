@@ -1,33 +1,33 @@
-function AccountBar()
+function AccountBar(props)
 {
+    if (props.loggedIn === true)
+    {
+        return (
+            <div  className="accountBar">
+                <div className="contentBox">
+                    <a className="navLink" href="accounts">{props.fullName}</a>
+                </div>
+                <div className="contentBox">
+                    <form action="logout" method="post">
+                        <button className="logout" type="submit">Logout</button>
+                    </form>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
-            <div  class="accountBar">
-                <?php if($loggedIn) : ?>
-                    <div class="contentBox">
-                        <a class="navLink" href="accounts"><?= $fullName ?></a>
-                    </div>
-                <?php endif ?>
-                <?php if(!$loggedIn) : ?>
-                    <div class="contentBox">
-                        <a class="navLink" href="login">Login</a>
-                    </div>
-                <?php endif ?>
-                <?php if($loggedIn) : ?>
-                    <div class="contentBox">
-                        <form action="logout" method="post">
-                            <button class="logout" type="submit">Logout</a>
-                        </form>
-                    </div>
-                <?php endif ?>
-                <?php if(!$loggedIn) : ?>
-                    <div class="contentBox">
-                        <a class="navLink" href="accountCreationForm">Register</a>
-                    </div>
-                <?php endif ?>
-</div>
+            <div  className="accountBar">
+                <div className="contentBox">
+                    <a className="navLink" href="login">Login</a>
+                </div>
+                <div className="contentBox">
+                    <a className="navLink" href="accountCreationForm">Register</a>
+                </div>
+            </div>
         </>
-    )
+    );
 }
 
-export defaultAccountBar
+export default AccountBar;

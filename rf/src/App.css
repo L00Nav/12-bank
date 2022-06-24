@@ -39,29 +39,10 @@
 
 
 /*Omnicorp custom*/
-:root {
-  --main-gold: #d7d5bf;
-  --main-black: #101011;
-  --actual-black: #000;
-}
-
-body,
-body * {
-  margin: 0;
-  padding: 0;
-  vertical-align: top;
-  box-sizing: border-box;
-  text-align: center;
-}
-
 .body {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  background-color: var(--main-black);
-  color: var(--main-gold);
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
 }
 
 .testBlock {
@@ -144,6 +125,7 @@ body * {
   color: var(--main-black);
   padding: 5px 8px;
   border-radius: 10px;
+  text-transform: none;
 }
 
 
@@ -161,6 +143,7 @@ body * {
 }
 
 .navLink:hover, .logout:hover{
+  color: var(--main-gold);
   text-decoration: underline;
 }
 

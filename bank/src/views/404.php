@@ -21,12 +21,3 @@ require __DIR__ . '/messages.php'
 
 <?php
 require __DIR__ . '/bottom.php';
-
-
-/*<ul>
-<?php foreach($list as $value) : ?>
-
-    <li><?= $value ?></li>
-
-<?php endforeach ?>
-</ul>*/

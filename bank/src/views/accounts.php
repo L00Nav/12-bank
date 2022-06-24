@@ -31,11 +31,6 @@ require __DIR__ . '/messages.php'
                 <a href='withdrawFunds' class='navLink'>Withdraw</a>
             </div>
             <div class="contentBox fundsButtonBox left">
-                <form action="delete" method="post">
-                    <?php  ?>
-                    <?php ?>
-                    <button class="logout" type="submit">Logout</a>
-                </form>
                 <a href="addFunds" class="navLink">Delete</a>
             </div>
         </div>
