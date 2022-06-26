@@ -23,7 +23,7 @@ function AccountBar(props)
                     <a className="navLink" href="login">Login</a>
                 </div>
                 <div className="contentBox">
-                    <a className="navLink" href="accountCreationForm">Register</a>
+                    <a className="navLink" href="account-creation-form">Register</a>
                 </div>
             </div>
         </>

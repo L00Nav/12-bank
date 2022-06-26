@@ -147,9 +147,19 @@ class App
             return (new HomeController)->withdrawFunds();
         }
 
+
+        /////////////////////////////////////////////////////////////////////////////////
+        ///API
+        /////////////////////////////////////////////////////////////////////////////////
+
         if ('GET' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'test')
         {
             return self::json(['Test']);
+        }
+
+        if ('GET' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'messages')
+        {
+            return (new HomeController)->messagesJson();
         }
 
         else

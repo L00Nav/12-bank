@@ -1,7 +1,7 @@
-import Top from "./Top";
-import AccountBar from "./AccountBar";
-import NavBar from "./NavBar";
-import Messages from "./Messages";
+import Top from "../Components/Top";
+import AccountBar from "../Components/AccountBar";
+import NavBar from "../Components/NavBar";
+import Messages from "../Components/Messages";
 import {useState, useEffect} from 'react';
 
 function Accounts(props)

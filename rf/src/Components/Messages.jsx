@@ -1,15 +1,20 @@
-function Messages(props)
-{
-    if (typeof props.messages === 'undefined')
-        return null;
+import {useState, useEffect} from 'react';
+import axios from 'axios';
 
-    if (props.messages.length === 0)
-        return null;
+function Messages()
+{
+    const [messages, setMessages] = useState([]);
+    useEffect(() => {
+        axios.get('http://omnicorp.bank.gov/api/messages')
+        .then(res => {
+            setMessages(res.data)
+        })
+    }, []);
 
     return (
         <>
             <div className="messageBox">
-                {props.messages.map((message, index) => {
+                {messages.map((message, index) => {
                     return (
                         <div key={index} className="contentBox">
                             <div className={message.type}>

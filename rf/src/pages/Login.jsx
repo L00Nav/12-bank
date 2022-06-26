@@ -1,7 +1,7 @@
-import Top from "./Top";
-import AccountBar from "./AccountBar";
-import NavBar from "./NavBar";
-import Messages from "./Messages";
+import Top from "../Components/Top";
+import AccountBar from "../Components/AccountBar";
+import NavBar from "../Components/NavBar";
+import Messages from "../Components/Messages";
 import {useState, useEffect} from 'react';
 
 function Login()
@@ -24,8 +24,6 @@ function Login()
             setFullName('Luna');
     }
 
-    const [messages, setMessages] = useState([{'msg' : 'Test successful', 'type' : 'success'}, {'msg' : 'Test also successful, but with a red X', 'type' : 'alert'}]);
-
     //useEffect(() => {
 
     //});
@@ -34,9 +32,7 @@ function Login()
             <>
                 <Top />
                 <AccountBar loggedIn={loggedIn} fullName={fullName} />
-                <Messages messages={messages} />
-                <button onClick={toggleLogin}>Login / out</button>
-                <button onClick={toggleName}>Toggle name</button>
+                <Messages />
                 
                 <div className="contentContainer">
                     <NavBar />
