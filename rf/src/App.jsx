@@ -1,19 +1,19 @@
 // import './bootstrap.css';
 import './App.css';
-// import Login from './Components/Login';
-// import CreateAccount from './Components/CreateAccount';
-import FourOhFour from './Components/FourOhFour';
-// import Accounts from './Components/Accounts';
-// import AdminLogin from './Components/AdminLogin';
-// import CreateAdmin from './Components/CreateAdmin';
-// import AddFunds from './Components/AddFunds';
-// import WithdrawFunds from './Components/WithdrawFunds';
+import getPage from './Js/urlController';
+import { useEffect, React } from 'react';
+import Main from './pages/Main';
 
 function App()
 {
+  //default page - login
+  //responses direct the use of page components
+  // const Page = CreateAdmin; //[getPage()];
+  //useEffect(() => {console.log(getPage())}, [])
+
   return (
     <div className='body'>
-      <FourOhFour />
+      <Main />
     </div>
   );
 }
