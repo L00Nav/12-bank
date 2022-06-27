@@ -12,11 +12,13 @@ class App
 
     public static function start()
     {
+        session_name('OmniBank');
         session_start();
-        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Origin: http://localhost:3000');
         header('Access-Control-Allow-Methods: OPTIONS, GET, POST, DELETE, PUT');
         header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With");
-        header('Content-Type: application/json');
+        header('Access-Control-Allow-Credentials: true');
+        // header('Content-Type: application/json');
         M::init();
         ob_start();
         $uri = explode('/', $_SERVER['REQUEST_URI']);
@@ -152,14 +154,29 @@ class App
         ///API
         /////////////////////////////////////////////////////////////////////////////////
 
-        if ('GET' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'test')
-        {
-            return self::json(['Test']);
-        }
-
         if ('GET' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'messages')
         {
             return (new HomeController)->messagesJson();
+        }
+
+        if ('GET' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'acbar')
+        {
+            return (new HomeController)->acBarJson();
+        }
+
+        if ('POST' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'login')
+        {
+            return (new AC)->doJsonLogin();
+        }
+
+        if ('GET' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'logout')
+        {
+            return (new AC)->doJsonLogout();
+        }
+
+        if ('GET' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'accountinfo')
+        {
+            return (new AC)->getUserDataJson();
         }
 
         else

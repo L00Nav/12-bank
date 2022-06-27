@@ -15,16 +15,16 @@ function Main()
 
   return (
     <Routes>
-      {/* <Route exact path='/' component={Home}></Route> */}
-      <Route exact path='/' element={Login()}></Route>
-      <Route exact path='/login' element={Login()}></Route>
-      <Route exact path='/accounts' element={Accounts()}></Route>
-      <Route exact path='/account-creation-form' element={CreateAccount()}></Route>
-      <Route exact path='/add-funds' element={AddFunds()}></Route>
-      <Route exact path='/withdraw-funds' element={WithdrawFunds()}></Route>
-      <Route exact path='/admin-login' element={AdminLogin()}></Route>
-      <Route exact path='/create-admin' element={CreateAdmin()}></Route>
-      <Route exact path='*' element={FourOhFour()}></Route>
+      {/* <Route exact path='/' component={Home} /> */}
+      <Route exact path='/login' element={<Login />} />
+      <Route exact path='/accounts' element={<Accounts />} />
+      <Route exact path='/account-creation-form' element={<CreateAccount />} />
+      <Route exact path='/add-funds' element={<AddFunds />} />
+      <Route exact path='/withdraw-funds' element={<WithdrawFunds />} />
+      <Route exact path='/admin-login' element={<AdminLogin />} />
+      <Route exact path='/create-admin' element={<CreateAdmin />} />
+      <Route exact path='*' element={<FourOhFour />} />
+      <Route exact path='/' element={<Login />} />
     </Routes>
   );
 }

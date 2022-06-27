@@ -3,13 +3,11 @@ import './App.css';
 import getPage from './Js/urlController';
 import { useEffect, React } from 'react';
 import Main from './pages/Main';
+import axios from 'axios';
 
 function App()
 {
-  //default page - login
-  //responses direct the use of page components
-  // const Page = CreateAdmin; //[getPage()];
-  //useEffect(() => {console.log(getPage())}, [])
+  axios.defaults.withCredentials = true;
 
   return (
     <div className='body'>

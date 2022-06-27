@@ -166,3 +166,7 @@
 .fundsButtonBox {
   margin: 10px
 }
+
+.form {
+  border: none;
+}

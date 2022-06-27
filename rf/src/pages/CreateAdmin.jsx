@@ -8,13 +8,10 @@ function Login()
 {
     useEffect(() => {document.title = 'Create admin account';}, []);
 
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [fullName, setFullName] = useState('');
-
     return (
             <>
                 <Top />
-                <AccountBar loggedIn={loggedIn} fullName={fullName} />
+                <AccountBar />
                 <Messages />
                 
                 <div className="contentContainer">

@@ -8,22 +8,6 @@ function Login()
 {
     useEffect(() => {document.title = 'Create an account';}, []);
 
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [fullName, setFullName] = useState('');
-
-    function toggleLogin()
-    {
-        setLoggedIn(!loggedIn);
-    }
-
-    function toggleName()
-    {
-        if (fullName === 'Luna')
-            setFullName('');
-        else
-            setFullName('Luna');
-    }
-
     const [messages, setMessages] = useState([{'msg' : 'Test successful', 'type' : 'success'}, {'msg' : 'Test also successful, but with a red X', 'type' : 'alert'}]);
 
     //useEffect(() => {
@@ -33,7 +17,7 @@ function Login()
     return (
             <>
                 <Top />
-                <AccountBar loggedIn={loggedIn} fullName={fullName} />
+                <AccountBar />
                 <Messages messages={messages} />
                 {/*
                 <button onClick={toggleLogin}>Login / out</button>

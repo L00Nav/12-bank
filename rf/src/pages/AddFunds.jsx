@@ -3,21 +3,29 @@ import AccountBar from "../Components/AccountBar";
 import NavBar from "../Components/NavBar";
 import Messages from "../Components/Messages";
 import {useState, useEffect} from 'react';
+import axios from 'axios';
 
 function AddFunds(props)
 {
     useEffect(() => {document.title = 'Add funds';}, []);
 
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [fullName, setFullName] = useState('');
     const [accounts, setAccounts] = useState([]);
-    useEffect(() => {setAccounts ([{'fname' : 'Lunar', 'lname' : 'Biscuit', 'email' : 'lunar@biscuit.com', 'pnumber' : '42069', 'anumber' : '1337', 'funds' : 420.69}])}, []);
+    const [loggedIn, setLoggedIn] = useState(false);
+    useEffect(() => {
+        axios.get("http://omnicorp.bank.gov/api/accountinfo")
+        .then(res => {
+            setAccounts(res.data);
+            if(res.data[0] !== 0)
+                setLoggedIn(true);
+        });
+    
+}, []);
 
-    if (accounts.length === 0)
+    if (!loggedIn)
         return (
             <>
                 <Top />
-                <AccountBar loggedIn={loggedIn} fullName={fullName} />
+                <AccountBar />
                 <Messages />
                 
                 <div className="contentContainer">
@@ -33,7 +41,7 @@ function AddFunds(props)
     return (
             <>
                 <Top />
-                <AccountBar loggedIn={loggedIn} fullName={fullName} />
+                <AccountBar />
                 <Messages />
                 
                 <div className="contentContainer">

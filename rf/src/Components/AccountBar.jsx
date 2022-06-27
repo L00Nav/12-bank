@@ -1,16 +1,39 @@
-function AccountBar(props)
+import {useState, useEffect} from 'react';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
+function AccountBar()
 {
-    if (props.loggedIn === true)
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [fullName, setFullName] = useState('');
+    useEffect(() => {
+        axios.get('http://omnicorp.bank.gov/api/acbar')
+        .then(res => {
+            setLoggedIn(res.data.loggedIn);
+            setFullName(res.data.fullName);
+        })
+    }, []);
+
+    const navigate = useNavigate();
+    function logoutening()
+    {
+        axios.get('http://omnicorp.bank.gov/api/logout')
+        .then(res => {
+            navigate('/login');
+        });
+    }
+
+    if (loggedIn === true)
     {
         return (
             <div  className="accountBar">
                 <div className="contentBox">
-                    <a className="navLink" href="accounts">{props.fullName}</a>
+                    <a className="navLink" href="accounts">{fullName}</a>
                 </div>
                 <div className="contentBox">
-                    <form action="logout" method="post">
-                        <button className="logout" type="submit">Logout</button>
-                    </form>
+                    <fieldset className="form">
+                        <button className="logout" type="button" onClick={logoutening}>Logout</button>
+                    </fieldset>
                 </div>
             </div>
         );

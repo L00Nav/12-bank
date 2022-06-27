@@ -268,4 +268,61 @@ class AccountController
         $_SESSION['user']['anumber'] = $userData['anumber'];
         $_SESSION['user']['funds'] = $userData['funds'];
     } //better use something other than session
+
+
+/////////////////////////////////////////////////////////////////////////////////
+///API
+/////////////////////////////////////////////////////////////////////////////////
+
+    public function apiAuth()
+    {
+        return; //check requester's email and pass
+    }
+
+    public function doJsonLogin()
+    {
+        $rawData = file_get_contents("php://input");
+        $data = json_decode($rawData, 1);
+
+        $users = self::getUserDatabase()->showAll();
+        foreach($users as $user)
+        {
+            if ($data['email'] != $user['email'])
+            {
+                continue;
+            }
+            if (md5($data['pass']) != $user['pass'])
+            {
+                M::add("Invalid log-in credentials", 'alert');
+                M::init();
+                return App::json(['success' => false]);
+            }
+            else 
+            {
+                self::authAdd($user['id']);
+                M::add('Hello, '.$user['fname'], 'success');
+                M::init();
+                return App::json(['success' => true]);
+            }
+        }
+        M::add("Invalid log-in credentials", 'alert');
+        return App::json(['success' => false]);
+    }
+
+    public function doJsonLogout()
+    {
+        self::authRem();
+        M::add('Logged out', 'success');
+        return;
+    }
+
+    public function getUserDataJson()
+    {
+        $user = self::getUserData();
+        if($user == [])
+            return App::json([0]);
+        unset($user['id']);
+        unset($user['pass']);
+        return App::json([$user]);
+    }
 }

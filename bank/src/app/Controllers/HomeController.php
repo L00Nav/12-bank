@@ -83,8 +83,19 @@ class HomeController
 
     public function messagesJson()
     {
-        M::add('Test', 'success');
+        // M::add('test', 'success');
         M::init();
         return App::json(M::get());
+    }
+
+    public function acBarJson()
+    {
+        $user = AC::getUserData();
+        if(empty($user))
+            $fullName = '';
+        else
+            $fullName = $user['fname'] .' '. $user['lname'];
+
+        return App::json(['loggedIn' => AC::auth(), 'fullName' => $fullName]);
     }
 }
