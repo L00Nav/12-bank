@@ -179,6 +179,26 @@ class App
             return (new AC)->getUserDataJson();
         }
 
+        if ('POST' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'deposit')
+        {
+            return (new AC)->depositJson();
+        }
+
+        if ('POST' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'withdraw')
+        {
+            return (new AC)->withdrawJson();
+        }
+
+        if ('GET' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'iban')
+        {
+            return (new AC)->getIBANjson();
+        }
+
+        if ('POST' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'createuser')
+        {
+            return (new AC)->createAccountJson();
+        }
+
         else
         {
             return (new HomeController)->fourOhFour();

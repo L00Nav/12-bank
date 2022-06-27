@@ -3,11 +3,13 @@ import AccountBar from "../Components/AccountBar";
 import NavBar from "../Components/NavBar";
 import Messages from "../Components/Messages";
 import {useState, useEffect} from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 function AddFunds(props)
 {
     useEffect(() => {document.title = 'Add funds';}, []);
+    const navigate = useNavigate();
 
     const [accounts, setAccounts] = useState([]);
     const [loggedIn, setLoggedIn] = useState(false);
@@ -19,7 +21,17 @@ function AddFunds(props)
                 setLoggedIn(true);
         });
     
-}, []);
+    }, []);
+
+    const [amount, setAmount] = useState(0);
+    function depositening()
+    {
+        axios.post('http://omnicorp.bank.gov/api/deposit', {amount: amount})
+        .then(res => {
+            console.log(res.data.success);
+            window.location.reload();
+        })
+    }
 
     if (!loggedIn)
         return (
@@ -52,10 +64,10 @@ function AddFunds(props)
                             <div key={index} className="contentBox fundsButtonBox left">
                                 {account.lname} {account.fname}<br />
                                 {account.funds} €<hr /><br />
-                                <form className="left" action="deposit" method="post">
-                                    Deposit amount: <input type="number" name="amount" step="0.01" /><br />
-                                    <input type="submit" value="Deposit" className="button" />
-                                </form>
+                                <fieldset className="left form">
+                                    Deposit amount: <input type="number" name="amount" step="0.01" onChange={e => setAmount(e.target.value)} /><br />
+                                    <button className="button" onClick={depositening}>Deposit</button>
+                                </fieldset>
                             </div>
                             )})}
                     </main>

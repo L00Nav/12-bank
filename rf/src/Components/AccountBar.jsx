@@ -2,16 +2,24 @@ import {useState, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-function AccountBar()
+function AccountBar(props)
 {
     const [loggedIn, setLoggedIn] = useState(false);
     const [fullName, setFullName] = useState('');
     useEffect(() => {
-        axios.get('http://omnicorp.bank.gov/api/acbar')
-        .then(res => {
-            setLoggedIn(res.data.loggedIn);
-            setFullName(res.data.fullName);
-        })
+        if(props.loggedIn === undefined)
+        {
+            axios.get('http://omnicorp.bank.gov/api/acbar')
+            .then(res => {
+                setLoggedIn(res.data.loggedIn);
+                setFullName(res.data.fullName);
+            })
+        }
+        else
+        {
+            setLoggedIn(props.loggedIn);
+            setFullName(props.fullName);
+        }
     }, []);
 
     const navigate = useNavigate();

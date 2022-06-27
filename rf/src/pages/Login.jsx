@@ -9,13 +9,23 @@ import { useNavigate } from "react-router-dom";
 
 function Login()
 {
+    const navigate = useNavigate();
+    useEffect(() => {
+        axios.get('http://omnicorp.bank.gov/api/acbar')
+        .then(res => {
+            if(res.data.loggedIn)
+                navigate('/accounts');
+        })
+    })
+
     useEffect(() => {document.title = 'Login';}, []);
 
-    //const [email, setEmail] = useState('');
-    const navigate = useNavigate();
+    
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
     function logening()
     {
-        axios.post('http://omnicorp.bank.gov/api/login', {email: "lunar@biscuit.com", pass: 'sausainis'})
+        axios.post('http://omnicorp.bank.gov/api/login', {email: email, pass: pass})
         .then(res => {
             console.log(res.data.success);
             if(res.data.success)
@@ -23,7 +33,7 @@ function Login()
                 navigate('/accounts');
             }
             else
-                navigate('/login');
+                window.location.reload();
         })
     }
 
@@ -38,9 +48,9 @@ function Login()
                     <main  className="mainContetBlock contentBox">
                         <fieldset className="mainContent form">
                             <label htmlFor="email">Email:</label><br />
-                            <input type="email" name="email" /><br /><br />
+                            <input type="email" name="email" onChange={e => setEmail(e.target.value)} /><br /><br />
                             <label htmlFor="pass">Password:</label><br />
-                            <input type="password" name="pass" /><br /><br />
+                            <input type="password" name="pass" onChange={e => setPass(e.target.value)} /><br /><br />
                             <input type="hidden" name="requestType" value="createAccount" />
                             <button className="button" onClick={logening}>Login</button>
                         </fieldset>

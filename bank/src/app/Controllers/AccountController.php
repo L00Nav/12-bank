@@ -325,4 +325,87 @@ class AccountController
         unset($user['pass']);
         return App::json([$user]);
     }
+
+    public function depositJson()
+    {
+        $rawData = file_get_contents("php://input");
+        $data = json_decode($rawData, 1);
+
+        $id = (int)$_SESSION['userID'];
+        $amount = (float)$data['amount'];
+        if ((new Validator)->validDeposit($amount))
+        {
+            $user = self::getUserData();
+            if (count($user) == 0)
+            {
+                M::add('Account not found', 'alert');
+                return App::json(['success' => false]);
+            }
+            $user['funds'] += $amount;
+            self::getUserDatabase()->update($id, $user);
+            self::getUserDatabase()->save();
+            M::add('Funds deposited', 'success');
+            return App::json(['success' => true]);
+        }
+        return App::json(['success' => false]);
+    }
+
+    public function withdrawJson()
+    {
+        $rawData = file_get_contents("php://input");
+        $data = json_decode($rawData, 1);
+
+        $id = (int)$_SESSION['userID'];
+        $amount = (float)$data['amount'];
+        $user = self::getUserData();
+        if (count($user) == 0)
+        {
+            M::add('Account not found', 'alert');
+            return App::json(['success' => false]);
+        }
+        if ((new Validator)->validWithdrawal($user, $amount))
+        {
+            $user['funds'] -= $amount;
+            self::getUserDatabase()->update($id, $user);
+            self::getUserDatabase()->save();
+            M::add('Funds withdrawn', 'success');
+            return App::json(['success' => true]);
+        }
+        return App::json(['success' => false]);
+    }
+
+    public function createAccountJson()
+    {
+        $rawData = file_get_contents("php://input");
+        $data = json_decode($rawData, 1);
+
+        $submittedInfo = [
+        'fname' => $data['fname'],
+        'lname' => $data['lname'],
+        'email' => $data['email'],
+        'pnumber' => $data['pnumber'],
+        'anumber' => $data['anumber'],
+        'pass' => $data['pass']];
+
+        if((new Validator)->validAccount($submittedInfo))
+        {
+            $submittedInfo['pass'] = md5($submittedInfo['pass']);
+            $submittedInfo['funds'] = 0;
+            self::getUserDatabase()->create($submittedInfo);
+            self::getUserDatabase()->save();
+
+            M::add('Account created', 'success');
+            return App::json(['success' => true]);
+        }
+        else
+        {
+            return App::json(['success' => false]);
+        }
+    }
+
+    public function getIBANjson()
+    {
+        $iban = self::getIBAN();
+        return App::json([$iban]);
+    }
 }

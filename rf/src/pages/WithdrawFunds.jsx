@@ -3,11 +3,15 @@ import AccountBar from "../Components/AccountBar";
 import NavBar from "../Components/NavBar";
 import Messages from "../Components/Messages";
 import {useState, useEffect} from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 function WithdrawFunds(props)
 {
     useEffect(() => {document.title = 'Withdraw funds';}, []);
+
+    const navigate = useNavigate();
+
     const [accounts, setAccounts] = useState([]);
     const [loggedIn, setLoggedIn] = useState(false);
     useEffect(() => {
@@ -19,6 +23,16 @@ function WithdrawFunds(props)
         });
     
     }, []);
+
+    const [amount, setAmount] = useState(0);
+    function withdrawening()
+    {
+        axios.post('http://omnicorp.bank.gov/api/withdraw', {amount: amount})
+        .then(res => {
+            console.log(res.data.success);
+            window.location.reload();
+        })
+    }
 
     if (!loggedIn)
         return (
@@ -36,7 +50,6 @@ function WithdrawFunds(props)
             </>
         );
 
-
     return (
             <>
                 <Top />
@@ -51,10 +64,10 @@ function WithdrawFunds(props)
                             <div key={index} className="contentBox fundsButtonBox left">
                                 {account.lname} {account.fname}<br />
                                 {account.funds} €<hr /><br />
-                                <form className="left" action="withdraw" method="post">
-                                    Deposit amount: <input type="number" name="amount" step="0.01" /><br />
-                                    <input type="submit" value="Withdraw" className="button" />
-                                </form>
+                                <fieldset className="left form">
+                                    Withdraw amount: <input type="number" name="amount" step="0.01" onChange={e => setAmount(e.target.value)} /><br />
+                                    <button className="button" onClick={withdrawening}>Withdraw</button>
+                                </fieldset>
                             </div>
                             )})}
                     </main>
