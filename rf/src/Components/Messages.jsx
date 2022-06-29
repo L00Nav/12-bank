@@ -7,7 +7,8 @@ function Messages()
     useEffect(() => {
         axios.get('http://omnicorp.bank.gov/api/messages')
         .then(res => {
-            setMessages(res.data)
+            setMessages(res.data);
+            //console.log(res.data);
         })
     }, []);
 

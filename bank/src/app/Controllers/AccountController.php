@@ -331,7 +331,7 @@ class AccountController
         $rawData = file_get_contents("php://input");
         $data = json_decode($rawData, 1);
 
-        $id = (int)$_SESSION['userID'];
+        $id = (int)$_SESSION['userID'] ?? -1;
         $amount = (float)$data['amount'];
         if ((new Validator)->validDeposit($amount))
         {
@@ -355,7 +355,7 @@ class AccountController
         $rawData = file_get_contents("php://input");
         $data = json_decode($rawData, 1);
 
-        $id = (int)$_SESSION['userID'];
+        $id = (int)$_SESSION['userID'] ?? -1;
         $amount = (float)$data['amount'];
         $user = self::getUserData();
         if (count($user) == 0)
@@ -371,6 +371,7 @@ class AccountController
             M::add('Funds withdrawn', 'success');
             return App::json(['success' => true]);
         }
+        M::add('Account not found', 'alert');
         return App::json(['success' => false]);
     }
 

@@ -19,7 +19,7 @@ class App
         header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With");
         header('Access-Control-Allow-Credentials: true');
         // header('Content-Type: application/json');
-        M::init();
+        //M::init();
         ob_start();
         $uri = explode('/', $_SERVER['REQUEST_URI']);
         array_shift($uri);

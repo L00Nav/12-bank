@@ -83,7 +83,7 @@ class HomeController
 
     public function messagesJson()
     {
-        // M::add('test', 'success');
+        //M::add('test', 'success');
         M::init();
         return App::json(M::get());
     }
