@@ -1,7 +1,6 @@
 // import './bootstrap.css';
 import './App.css';
-import getPage from './Js/urlController';
-import { useEffect, React } from 'react';
+import { React } from 'react';
 import Main from './pages/Main';
 import axios from 'axios';
 

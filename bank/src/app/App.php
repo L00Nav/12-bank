@@ -199,6 +199,21 @@ class App
             return (new AC)->createAccountJson();
         }
 
+        if ('POST' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'createadmin')
+        {
+            return self::json(['admin created']);
+        }
+
+        if ('POST' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'adminlogin')
+        {
+            return self::json(['admin logged in']);
+        }
+
+        if ('GET' == $m && count($uri) == 2 && $uri[0] === 'api' && $uri[1] === 'adminlogout')
+        {
+            return self::json(['admin logged out']);
+        }
+
         else
         {
             return (new HomeController)->fourOhFour();

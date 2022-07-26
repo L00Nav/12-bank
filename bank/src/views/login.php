@@ -13,7 +13,7 @@ require __DIR__ . '/messages.php'
 <?php require __DIR__ . '/navBar.php'; ?>
 
 <main  class="mainContetBlock contentBox">
-<form class="mainContent" action="login" method="post">
+    <form class="mainContent" action="login" method="post">
         <label for="email">Email:</label><br>
         <input type="email" name="email"><br><br>
         <label for="pass">Password:</label><br>

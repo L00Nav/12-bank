@@ -149,7 +149,7 @@ class AccountController
     public function doAdminLogout()
     {
         self::adminAuthRem();
-        M::add('Logged out', 'success');
+        M::add('Administrator logged out', 'success');
         return App::redirect('login');
     }
 
@@ -408,5 +408,40 @@ class AccountController
     {
         $iban = self::getIBAN();
         return App::json([$iban]);
+    }
+
+    public function doAdminJsonLogin()
+    {
+        $rawData = file_get_contents("php://input");
+        $data = json_decode($rawData, 1);
+    
+        $admins = self::getAdminDatabase()->showAll();
+        foreach($admins as $admin)
+        {
+            if ($data['adminName'] != $admin['adminName'])
+            {
+                continue;
+            }
+            if (md5($data['adminPass']) != $admin['adminPass'])
+            {
+                M::add("Invalid log-in credentials", 'alert');
+                return App::json(['success' => false]);
+            }
+            else 
+            {
+                self::adminAuthAdd($admin['id']);
+                M::add('Hello, '.$admin->adminName, 'success');
+                return App::json(['success' => true]);
+            }
+        }
+        M::add("Invalid log-in credentials", 'alert');
+        return App::json(['success' => false]);
+    }
+    
+    public function doAdminJsonLogout()
+    {
+        self::adminAuthRem();
+        M::add('Administrator logged out', 'success');
+        return App::json(['success' => true]);
     }
 }
