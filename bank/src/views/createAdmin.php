@@ -14,12 +14,12 @@ require __DIR__ . '/messages.php'
 
 <main  class="mainContetBlock contentBox">
 <form class="mainContent" action="adminCreate" method="post">
-        <label for="adminName">Username:</label><br>
-        <input type="text" name="adminName"><br><br>
-        <label for="adminPass">Password:</label><br>
-        <input type="password" name="adminPass"><br><br>
-        <input class="button" type="submit" value="Register">
-    </form>
+    <label for="adminName">Username:</label><br>
+    <input type="text" name="adminName"><br><br>
+    <label for="adminPass">Password:</label><br>
+    <input type="password" name="adminPass"><br><br>
+    <input class="button" type="submit" value="Register">
+</form>
 </main>
 
 </div>

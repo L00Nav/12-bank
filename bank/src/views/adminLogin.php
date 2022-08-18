@@ -13,13 +13,13 @@ require __DIR__ . '/messages.php'
 <?php require __DIR__ . '/navBar.php'; ?>
 
 <main  class="mainContetBlock contentBox">
-    <form class="mainContent" action="aLogin" method="post">
-        <label for="adminName">Username:</label><br>
-        <input type="text" name="adminName"><br><br>
-        <label for="adminPass">Password:</label><br>
-        <input type="password" name="adminPass"><br><br>
-        <input class="button" type="submit" value="Login">
-    </form>
+<form class="mainContent" action="aLogin" method="post">
+    <label for="adminName">Username:</label><br>
+    <input type="text" name="adminName"><br><br>
+    <label for="adminPass">Password:</label><br>
+    <input type="password" name="adminPass"><br><br>
+    <input class="button" type="submit" value="Login">
+</form>
 </main>
 
 </div>
